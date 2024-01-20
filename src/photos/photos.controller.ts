@@ -1,7 +1,8 @@
-import { Controller, Post, UploadedFile, UseInterceptors, Get, Param, Res } from '@nestjs/common';
+import { Controller, Post, UploadedFile, UseInterceptors, Get, Param, Res, Body } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { PhotosService } from './photos.service';
 import { Response } from 'express';
+import { CreatePhotoCommentDto } from './dto/photo-comment.dto';
 
 @Controller('photos')
 export class PhotosController {
@@ -21,5 +22,10 @@ export class PhotosController {
   @Get(':filename')
   serveFile(@Param('filename') filename: string, @Res() res: Response) {
     return this.photosService.serveFile(filename, res);
+  }
+
+  @Post(':filename/comments')
+  addComment(@Param('filename') filename: string, @Body() body: CreatePhotoCommentDto) {
+    return this.photosService.addComment(filename, body);
   }
 }
